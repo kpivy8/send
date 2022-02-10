@@ -1,3 +1,4 @@
+#修改过期时间列表等参数，默认不再强制https访问，自动跟随协议
 # Firefox Send
 
 [![CircleCI](https://img.shields.io/circleci/project/github/mozilla/send.svg)](https://circleci.com/gh/mozilla/send)
