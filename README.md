@@ -2,8 +2,9 @@
 
 
 # docker相关
-docker build -t kpivy8/send:latest .
-docker run --restart=always --log-opt max-size=10m --log-opt max-file=3  -d --privileged   --net=host -e 'NODE_ENV=production'   -e 'REDIS_HOST=127.0.0.1' --name=send kpivy8/send:latest
+## docker build -t kpivy8/send:latest .
+
+## docker run --restart=always --log-opt max-size=10m --log-opt max-file=3  -d --privileged   --net=host -e 'NODE_ENV=production'   -e 'REDIS_HOST=127.0.0.1' --name=send kpivy8/send:latest
 
 
 
