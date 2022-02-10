@@ -2,7 +2,7 @@ const convict = require('convict');
 const { tmpdir } = require('os');
 const path = require('path');
 const { randomBytes } = require('crypto');
-
+const MAX_EXPIRE_DAYS=360 //expire_times_seconds最大天数
 const conf = convict({
   s3_bucket: {
     format: String,
@@ -26,37 +26,37 @@ const conf = convict({
   },
   expire_times_seconds: {
     format: Array,
-    default: [300, 3600, 86400, 604800],
+    default: [300,900,3600,].concat(Array(MAX_EXPIRE_DAYS).fill(1).map((e,i)=>e*++i*86400)), //多少时间过期列表
     env: 'EXPIRE_TIMES_SECONDS'
   },
-  default_expire_seconds: {
+  default_expire_seconds: {  //默认过期时间
     format: Number,
-    default: 86400,
+    default: 3600*24,
     env: 'DEFAULT_EXPIRE_SECONDS'
   },
-  max_expire_seconds: {
+  max_expire_seconds: { //登陆状态下，这个基本没用，最大过期时间，要比expire_times_seconds的最大值等于或者大于
     format: Number,
-    default: 86400 * 7,
+    default: 864000*MAX_EXPIRE_DAYS,
     env: 'MAX_EXPIRE_SECONDS'
   },
-  anon_max_expire_seconds: {
+  anon_max_expire_seconds: { //陌生人最大过期时间，要比expire_times_seconds的最大值等于或者大于
     format: Number,
-    default: 86400,
+    default: 864000*MAX_EXPIRE_DAYS,
     env: 'ANON_MAX_EXPIRE_SECONDS'
   },
   download_counts: {
     format: Array,
-    default: [1, 2, 3, 4, 5, 20, 50, 100],
+    default: [1, 2, 3, 4, 5, 20, 50, 100, 200, 500, 1000, 2000, 3000, 4000, 5000, 100000,], //多少次过期列表
     env: 'DOWNLOAD_COUNTS'
   },
-  max_downloads: {
+  max_downloads: { //最大下载次数，要比download_counts的最大值大于等于
     format: Number,
-    default: 100,
+    default: 100000,
     env: 'MAX_DOWNLOADS'
   },
-  anon_max_downloads: {
+  anon_max_downloads: { //未登陆状态最大下载次数，要比download_counts的最大值大于等于
     format: Number,
-    default: 5,
+    default: 100000,
     env: 'ANON_MAX_DOWNLOADS'
   },
   max_files_per_archive: {
@@ -71,7 +71,7 @@ const conf = convict({
   },
   redis_host: {
     format: String,
-    default: 'mock',
+    default: '127.0.0.1',
     env: 'REDIS_HOST'
   },
   redis_event_expire: {
@@ -127,17 +127,17 @@ const conf = convict({
   },
   env: {
     format: ['production', 'development', 'test'],
-    default: 'development',
+    default: 'production',
     env: 'NODE_ENV'
   },
   max_file_size: {
     format: Number,
-    default: 1024 * 1024 * 1024 * 2.5,
+    default: 1024 * 1024 * 1024 * 1024 * 2.5,
     env: 'MAX_FILE_SIZE'
   },
   anon_max_file_size: {
     format: Number,
-    default: 1024 * 1024 * 1024,
+    default: 1024 * 1024 * 1024 * 1024,
     env: 'ANON_MAX_FILE_SIZE'
   },
   l10n_dev: {
@@ -147,7 +147,7 @@ const conf = convict({
   },
   base_url: {
     format: 'url',
-    default: 'https://send.firefox.com',
+    default: 'http://send.firefox.com',
     env: 'BASE_URL'
   },
   file_dir: {
