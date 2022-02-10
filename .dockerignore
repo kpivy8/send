@@ -2,7 +2,7 @@
 .nyc_output
 .vscode
 .DS_Store
+.git
 coverage
 docs
 firefox
-node_modules
