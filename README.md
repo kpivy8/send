@@ -1,4 +1,12 @@
-#修改过期时间列表等参数，默认不再强制https访问，自动跟随协议
+# 修改过期时间列表等参数，默认不再强制https访问，自动跟随协议
+
+
+# docker相关
+docker build -t kpivy8/send:latest .
+docker run --restart=always --log-opt max-size=10m --log-opt max-file=3  -d --privileged   --net=host -e 'NODE_ENV=production'   -e 'REDIS_HOST=127.0.0.1' --name=send kpivy8/send:latest
+
+
+
 # Firefox Send
 
 [![CircleCI](https://img.shields.io/circleci/project/github/mozilla/send.svg)](https://circleci.com/gh/mozilla/send)
